@@ -137,7 +137,12 @@ The shift to using Gateway API is largely about separating concerns.
 In the old ingress model, a single developer often had to manage the LB's IP, the TLS certificates, and the routing paths all in one file, 
 which is a security and management nightmare in large companies.  
 
-In order to use Ingress, a platform engineer has to install it into the K8s cluster
+In order to use Ingress, a platform engineer has to install it into the K8s cluster, using a Helm chart or plain YAML files.  
+When installing it, cloud platforms like AWS would create an Elastic LB for that specific Ingress controller.  
+And it automatically registers an ingress class in your Kubernetes cluster that is linked to that ingress controller.  
+
+The next step for the platform engineer is to install cert manager 
+
 
 ## Using Gateway API
 
