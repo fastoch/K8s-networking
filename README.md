@@ -134,18 +134,26 @@ The shift to using Gateway API is largely about separating concerns.
 
 ## Before Gateway API
 
-In the old ingress model, a single developer often had to manage the LB's IP, the TLS certificates, and the routing paths all in one file, 
+In the old ingress model, a single developer often had to manage the LB's IP, the TLS certificates, and the routing paths, all in one file, 
 which is a security and management nightmare in large companies.  
 
 In order to use Ingress, a platform engineer has to install it into the K8s cluster, using a Helm chart or plain YAML files.  
 When installing it, cloud platforms like AWS would create an Elastic LB for that specific Ingress controller.  
 And it automatically registers an ingress class in your Kubernetes cluster that is linked to that ingress controller.  
 
-The next step for the platform engineer is to install cert manager 
-
+The next step for the platform engineer is to install cert-manager so that we can dynamically obtain TLS certificates from Let's encrypt.  
 
 ## Using Gateway API
 
+To use a Gateway API, the platform engineer first installs Gateway API custom resources, since they do not come by default yet, 
+and installs one of the Gateway API controllers.  
+
+One of the most common Gateway APIs is Istio.  
+When you install Istio, you get a gateway class that your K8s cluster operators can use to create gateways.  
+It does not create a LB at this stage.  
+
+Next, the platform engineer or cluster operator must create a gateway and specify the cert-manager cluster issuer (to obtain certificates).  
 
 
-9/13
+
+11/13
