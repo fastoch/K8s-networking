@@ -65,7 +65,7 @@ NodePort like 30120.
 <img width="898" height="868" alt="image" src="https://github.com/user-attachments/assets/d9918a00-9d62-4448-b703-06e3d391f539" />  
 
 Another benefit is that we can get a TLS certificate from AWS, add it to the loadbalancer to handle encryption, and send plain 
-HTTP traffic to our app.  
+HTTP traffic to our app (TLS = transport layer security, the successor to SSL introduced in 1999).  
 
 The biggest issue with this approach is the cost.  
 You have to pay for every single loadbalancer you create, and the price is usually structured in 2 ways:
@@ -84,13 +84,39 @@ For a long time, the most popular ingress controller was the one provided by Ngi
 When you create an ingress resource (a K8s object) and apply it (`kubectl apply`), the ingress controller parses all those configurations 
 and converts them to native Nginx config.  
 
-This approach allows you to have a single LB and use **path-based routing**.  
+This approach allows you to have a single LB and use **path-based routing**, for instance:
 - if a client requests the "user" endpoint, the request is forwarded to the "user" application
 - if the path is /catalog, it forwards the request to the catalog microservice
 
 You can also use **domain-based routing**:
-- instead of /user, you
+- instead of /user, you could use user.example.com
+- and instead of /catalog, you could use catalog.example.com
 
+In this setup, everu single request that comes to the LB is sent to the ingress controller and route to the appropriate microservice.  
+<img width="886" height="639" alt="image" src="https://github.com/user-attachments/assets/f7ea89d0-b5c1-4ea8-a8b8-598dc6788d22" />  
 
+## Shared LB
+
+The first benefit is that you can reuse the same LB for all your applications.  
+
+## Offload TLS at the Ingress level
+
+We also frequently use certManager to automatically obtain TLS certificates from Let's encrypt.  
+Offloading TLS at the ingress level allows our applications to receive plain HTTP traffic instead of encrypted HTTPS.  
+As a result, we don't have to manage certificates on every single application exposed to the Internet.
+Auto-renewal of certificates is automated as well.  
+
+## Prometheus metrics out-of-the-box
+
+Finally, Ingress is great because you can scrape latency, throughput, and other metrics directly from the ingress controller.  
+This avoids the need to instrument each separate application and update its source code.  
+
+With these out-of-the-box (OOTB) metrics, you can add alerts.  
+For example, if latency increases above 5 seconds, or if the number of requests per second exceeds 10.000, you might want to scale 
+your application.  
+
+---
+
+For a very long time, using 
 
 7/13
