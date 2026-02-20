@@ -117,6 +117,30 @@ your application.
 
 ---
 
-For a very long time, using 
+For a very long time, using ingress for external microservices and ClusterIP for internal ones was the most common approach 
+for production setups.  
 
-7/13
+Of course, some teams use service meshes like Istio, but for most companies, service meshes are overkill.  
+
+Recently, it was announced that the Nginx ingress controller will be retired in March 2026.  
+There are many other ingress controllers, including the native AWS LoadBalancer controller, as well as Traefik.  
+
+But it's obvious that the K8s community is moving to the new option: **Gateway API**.  
+In the near future, it will probably become the new standard and completely replace Ingress.
+
+# Gateway API
+
+The shift to using Gateway API is largely about separating concerns.  
+
+## Before Gateway API
+
+In the old ingress model, a single developer often had to manage the LB's IP, the TLS certificates, and the routing paths all in one file, 
+which is a security and management nightmare in large companies.  
+
+In order to use Ingress, a platform engineer has to install it into the K8s cluster
+
+## Using Gateway API
+
+
+
+9/13
